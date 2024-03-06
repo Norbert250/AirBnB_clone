@@ -15,7 +15,7 @@ To start the command interpreter, follow these steps:
 1. Ensure you have Python installed on your system (version 3.x recommended).
 2. Clone the project repository to your local machine.
    
-   git clone https://github.com/yourusername/command-interpreter.git
+   git clone https://github.com/Norbert250/AirBnB_clone.git
    
 3. Navigate to the project directory.
   
