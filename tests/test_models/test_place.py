@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Defines unittests for models/place.py.
+
 Unittest classes:
     TestPlace_instantiation
     TestPlace_save
@@ -246,3 +247,4 @@ class TestPlace_to_dict(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
