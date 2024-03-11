@@ -1,51 +1,51 @@
-#!/usr/bin/python3
-"""Defines the BaseModel class."""
+#!/usr/bin/python
+""" Module that contains the Basemodel for the project"""
 import models
-from uuid import uuid4
+import uuid
 from datetime import datetime
 
 
 class BaseModel:
-    """Represents the BaseModel of the HBnB project."""
+    """ Base Model Class """
 
     def __init__(self, *args, **kwargs):
-        """Initialize a new BaseModel.
-
-        Args:
-            *args (any): Unused.
-            **kwargs (dict): Key/value pairs of attributes.
         """
-        tform = "%Y-%m-%dT%H:%M:%S.%f"
-        self.id = str(uuid4())
-        self.created_at = datetime.today()
-        self.updated_at = datetime.today()
-        if len(kwargs) != 0:
-            for k, v in kwargs.items():
-                if k == "created_at" or k == "updated_at":
-                    self.__dict__[k] = datetime.strptime(v, tform)
+        Initialization methon to initilize each instance of BaseModel
+        Args:
+            self: Refers to the Object created.
+        Attributes:
+            id: Unique Identification number for each instance
+            created_at: Time the each instance was created
+            updated_at: Last time the instance was updated
+        """
+        if len(kwargs):
+            iso_date = "%Y-%m-%dT%H:%M:%S.%f"
+            for key, value in kwargs.items():
+                if key in ["created_at", "updated_at"]:
+                    self.__dict__[key] = datetime.strptime(value, iso_date)
                 else:
-                    self.__dict__[k] = v
+                    self.__dict__[key] = value
         else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.today()
+            self.updated_at = datetime.today()
             models.storage.new(self)
 
     def save(self):
-        """Update updated_at with the current datetime."""
+        """ Updates instance attribute *updated_at* with current datetime """
         self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
-        """Return the dictionary of the BaseModel instance.
+        """ Returns a dictionary of the instance attributes"""
+        base_dict = self.__dict__.copy()
+        base_dict["created_at"] = self.created_at.isoformat()
+        base_dict["updated_at"] = self.updated_at.isoformat()
+        base_dict["__class__"] = self.__class__.__name__
 
-        Includes the key/value pair __class__ representing
-        the class name of the object.
-        """
-        rdict = self.__dict__.copy()
-        rdict["created_at"] = self.created_at.isoformat()
-        rdict["updated_at"] = self.updated_at.isoformat()
-        rdict["__class__"] = self.__class__.__name__
-        return rdict
+        return base_dict
 
     def __str__(self):
-        """Return the print/str representation of the BaseModel instance."""
-        clname = self.__class__.__name__
-        return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
+        """ String Representation of base model"""
+        return "[{}] ({}) {} ".format(self.__class__.__name__,
+                                      self.id, self.__dict__)
